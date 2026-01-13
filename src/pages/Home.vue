@@ -1,9 +1,11 @@
 <template>
   <div
-    class="w-full h-screen grid grid-rows-[auto_1fr] lg:grid-rows-none lg:grid-cols-[16rem_1fr]"
+    class="w-full h-screen "
   >
     <!-- Sidebar -->
-    <aside class="bg-background h-full w-64 border-r hidden lg:flex flex-col">
+    <aside
+      class="bg-background fixed left-0 top-0 h-screen w-64 border-r hidden lg:flex flex-col z-30"
+    >
       <!-- Logo -->
       <div class="flex items-center justify-center px-8 h-16 border-b gap-3">
         <span class="text-xs text-[#313230] font-semibold">Unbekannte Praxis</span>
@@ -35,11 +37,9 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="flex flex-col h-full">
+<div class="flex flex-col min-h-screen lg:ml-64">
       <!-- Mobile Header -->
-      <header
-        class="flex items-center justify-between h-12 border-b lg:hidden px-4"
-      >
+      <header class="flex items-center justify-between h-12 border-b lg:hidden px-4">
         <button @click="sidebarOpen = !sidebarOpen">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -50,7 +50,10 @@
             />
           </svg>
         </button>
-        <span class="text-base truncate font-semibold text-gray-600 overflow-hidden text-ellipsis mr-auto select-none">Unbekannte Praxis</span>
+        <span
+          class="text-base truncate font-semibold text-gray-600 overflow-hidden text-ellipsis mr-auto select-none"
+          >Unbekannte Praxis</span
+        >
       </header>
 
       <!-- Content -->
@@ -89,14 +92,12 @@
               Klicken Sie auf einen Mitarbeiter, um den Konto-Verlauf einzusehen
             </span>
           </div>
-          
-         <div class="p-6 bg-white border rounded-lg shadow">
+
+          <div class="p-6 bg-white border rounded-lg shadow">
             <h3 class="font-bold text-gray-700 mb-2">Ihre nächste Abwesenheit</h3>
-          
+            <NextabsenceCalendar></NextabsenceCalendar>
           </div>
         </div>
-
-        
       </main>
     </div>
   </div>
@@ -105,6 +106,7 @@
 <script setup>
 import SidebarLink from "@/components/SidebarLink.vue";
 import sidebarAction from "@/components/SidebarAction.vue";
+import NextabsenceCalendar from "@/components/NextAbsenceCalendar.vue";
 </script>
 
 <style scoped>

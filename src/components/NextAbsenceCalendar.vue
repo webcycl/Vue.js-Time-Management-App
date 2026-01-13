@@ -6,7 +6,7 @@
         class="h-7 w-7 border rounded-md hover:bg-gray-100 flex items-center justify-center"
         @click="prevMonth"
       >
-        <ChevronLeft class="w-4 h-4" />
+        ‹
       </button>
 
       <span class="flex-1 text-center text-base font-semibold text-gray-700">
@@ -17,72 +17,108 @@
         class="h-7 w-7 border rounded-md hover:bg-gray-100 flex items-center justify-center"
         @click="nextMonth"
       >
-        <ChevronRight class="w-4 h-4" />
+        ›
       </button>
     </div>
 
-    <!-- Calendar -->
-    <VueDatePicker
-      v-model="date"
-      inline
-      :month="month"
-      :year="year"
-      :enable-time-picker="false"
-      :hide-navigation="true"
-      auto-apply
-      class="calendar"
-    />
+    <!-- Weekdays -->
+    <div class="grid grid-cols-7 text-xs text-gray-400 mb-1">
+      <div v-for="d in weekdays" :key="d" class="text-center">
+        {{ d }}
+      </div>
+    </div>
+
+    <!-- Days -->
+    <div class="grid grid-cols-7 gap-0.5">
+      <div
+        v-for="(day, index) in calendarDays"
+        :key="index"
+        class="aspect-square flex items-center justify-center text-sm rounded-md"
+        :class="{
+          'text-gray-400': !day.currentMonth,
+          'hover:bg-primary/5 cursor-pointer': day.currentMonth
+        }"
+      >
+        {{ day.date }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
-import VueDatePicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
 
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
+const today = new Date()
+const currentMonth = ref(today.getMonth())
+const currentYear = ref(today.getFullYear())
 
-const date = ref(new Date())
-const month = ref(date.value.getMonth())
-const year = ref(date.value.getFullYear())
+const weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
 
 const monthYear = computed(() =>
-  date.value.toLocaleDateString('de-DE', {
+  new Date(currentYear.value, currentMonth.value).toLocaleDateString('de-DE', {
     month: 'long',
     year: 'numeric',
   })
 )
 
+const daysInMonth = (month, year) =>
+  new Date(year, month + 1, 0).getDate()
+
+const firstDayOfMonth = computed(() => {
+  const day = new Date(currentYear.value, currentMonth.value, 1).getDay()
+  return day === 0 ? 6 : day - 1 // convert Sunday → last
+})
+
+const calendarDays = computed(() => {
+  const days = []
+
+  const prevMonthDays = daysInMonth(
+    currentMonth.value - 1,
+    currentYear.value
+  )
+
+  // Previous month filler
+  for (let i = firstDayOfMonth.value - 1; i >= 0; i--) {
+    days.push({
+      date: prevMonthDays - i,
+      currentMonth: false,
+    })
+  }
+
+  // Current month
+  for (let i = 1; i <= daysInMonth(currentMonth.value, currentYear.value); i++) {
+    days.push({
+      date: i,
+      currentMonth: true,
+    })
+  }
+
+  // Next month filler
+  while (days.length < 42) {
+    days.push({
+      date: days.length - daysInMonth(currentMonth.value, currentYear.value) + 1,
+      currentMonth: false,
+    })
+  }
+
+  return days
+})
+
 const prevMonth = () => {
-  if (month.value === 0) {
-    month.value = 11
-    year.value--
+  if (currentMonth.value === 0) {
+    currentMonth.value = 11
+    currentYear.value--
   } else {
-    month.value--
+    currentMonth.value--
   }
 }
 
 const nextMonth = () => {
-  if (month.value === 11) {
-    month.value = 0
-    year.value++
+  if (currentMonth.value === 11) {
+    currentMonth.value = 0
+    currentYear.value++
   } else {
-    month.value++
+    currentMonth.value++
   }
 }
 </script>
-
-<style scoped>
-.calendar :deep(.dp__calendar) {
-  width: 100%;
-}
-
-.calendar :deep(.dp__cell_inner) {
-  border-radius: 6px;
-  font-size: 13px;
-}
-
-.calendar :deep(.dp__cell_inner:hover) {
-  background-color: rgba(59, 130, 246, 0.05);
-}
-</style>
