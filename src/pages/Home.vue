@@ -63,7 +63,7 @@
         </p>
 
         <!-- Dashboard Cards -->
-        < class="pr-5.5 md:pr-10 pl-5.5 grid gap-4 grid-cols-1 md:grid-cols-3 pb-20">
+        <div class="pr-5.5 md:pr-10 pl-5.5 grid gap-4 grid-cols-1 md:grid-cols-3 pb-20">
           <div class="p-6 bg-white border rounded-lg shadow">
             <h3 class="font-bold text-gray-700 mb-2">Nicht eingestempelt</h3>
             <button
@@ -92,7 +92,8 @@
           
          <div class="p-6 bg-white border rounded-lg shadow">
             <h3 class="font-bold text-gray-700 mb-2">Ihre nächste Abwesenheit</h3>
-            <!-- <NextAbsenceCalendar /> -->
+          
+          </div>
         </div>
 
         
@@ -103,8 +104,7 @@
 
 <script setup>
 import SidebarLink from "@/components/SidebarLink.vue";
-import SidebarAction from "@/components/SidebarAction.vue";
-// import NextAbsenceCalendar from "@/components/NextAbsenceCalendar.vue";
+import sidebarAction from "@/components/SidebarAction.vue";
 </script>
 
 <style scoped>
