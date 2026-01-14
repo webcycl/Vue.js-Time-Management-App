@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-full h-screen "
-  >
+  <div class="w-full h-screen">
     <!-- Sidebar -->
     <aside
       class="bg-background fixed left-0 top-0 h-screen w-64 border-r hidden lg:flex flex-col z-30"
@@ -37,7 +35,7 @@
     </aside>
 
     <!-- Main Content -->
-<div class="flex flex-col min-h-screen lg:ml-64">
+    <div class="flex flex-col min-h-screen lg:ml-64">
       <!-- Mobile Header -->
       <header class="flex items-center justify-between h-12 border-b lg:hidden px-4">
         <button @click="sidebarOpen = !sidebarOpen">
@@ -59,7 +57,7 @@
       <!-- Content -->
       <main class="flex-1 bg-white overflow-auto p-6">
         <h1 class="text-2xl sm:text-3xl font-bold mb-2">
-          Willkommen, Unbekannter Nutzer
+          Willkommen, {{ user?.username }}
         </h1>
         <p class="text-muted-foreground mb-6 text-[#78716c]">
           Hier ist eine Übersicht Ihrer Zeiterfassung
@@ -104,10 +102,40 @@
 </template>
 
 <script setup>
-import SidebarLink from "@/components/SidebarLink.vue";
-import sidebarAction from "@/components/SidebarAction.vue";
-import NextabsenceCalendar from "@/components/NextAbsenceCalendar.vue";
+import SidebarLink from "@/components/SidebarLink.vue"
+import SidebarAction from "@/components/SidebarAction.vue"
+import NextabsenceCalendar from "@/components/NextAbsenceCalendar.vue"
+import { onMounted, ref } from "vue"
+import { getHealth } from "@/api/health"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+
+const user = ref(null)
+const health = ref(null)
+const healthError = ref(null)
+
+onMounted(async () => {
+  // 🔐 Load user from localStorage
+  const storedUser = localStorage.getItem("user")
+  if (!storedUser) {
+    router.push("/login")
+    return
+  }
+
+  user.value = JSON.parse(storedUser)
+
+  // 🩺 Health check
+  try {
+    health.value = await getHealth()
+    console.log("Health check OK:", health.value)
+  } catch (err) {
+    healthError.value = err.message
+    console.error("Health check failed:", err)
+  }
+})
 </script>
+
 
 <style scoped>
 body {
