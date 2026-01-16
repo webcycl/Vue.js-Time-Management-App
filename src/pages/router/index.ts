@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/pages/Login.vue'
 import Home from '@/pages/Home.vue'
-
+import Error from '../Error.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -19,6 +19,11 @@ const router = createRouter({
       name: 'home',
       component: Home,
     },
+      {
+    path: "/error",
+    name: "error",
+    component: Error,
+  },
   ],
 })
 

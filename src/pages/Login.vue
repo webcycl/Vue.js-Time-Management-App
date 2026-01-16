@@ -1,14 +1,14 @@
 <template>
   <nav class="sticky top-0 bg-background border-b border-[#e6e8ec] z-20">
-    <div class="pr-5.5 md:pr-10 pl-5.5 md:pl-10 w-full max-w-[1296px] mx-auto flex justify-between items-center h-16">
+    <div class="pr-5 md:pr-10 pl-5 md:pl-10 w-full max-w-[1296px] mx-auto flex justify-between items-center h-16">
       <!-- Logo -->
       <a href="/" class="mr-auto">
         <img src="https://app.vettime.de/_next/static/media/logo-vettime.5428390e.svg" alt="VetTime Logo"
-          class="h-6.5 w-fit" />
+          class="h-6 w-fit" />
       </a>
 
       <!-- Buttons -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 border">
         <router-link to="/login">
           <button
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-[13px] font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 duration-100 border-input hover:text-accent-foreground bg-transparent text-gray-700 border hover:bg-gray-100/50 max-h-8 h-8 px-3.5">
@@ -26,11 +26,11 @@
     </div>
   </nav>
 
-  <div class="min-h-screen bg-background flex flex-col lg:flex-row">
+  <div class=" bg-background flex flex-col lg:flex-row">
     <!-- Left side: Form -->
     <div class="flex flex-1 justify-center items-center p-6">
-      <div class="w-full max-w-md bg-card text-card-foreground rounded-lg shadow-md p-6">
-        <h2 class="text-3xl font-bold text-center mb-6">Demo Login</h2>
+      <div class="w-full max-w-md border  text-card-foreground rounded-lg shadow-md p-6">
+        <h2 class="text-3xl font-bold text-center mb-6">demo</h2>
 
         <form class="space-y-4" @submit.prevent="login">
           <div>
@@ -41,6 +41,8 @@
           </div>
 
           <div class="relative">
+            <label for="username" class="block text-sm font-medium mb-1">Passwort</label>
+
             <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password"
               autocomplete="current-password" placeholder="Ihr Passwort"
               class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 pr-10"
@@ -85,14 +87,36 @@
       <img src="https://app.vettime.de/images/undraw_real-time-collaboration_bchs.svg" alt="Collaboration illustration"
         class="w-3/4 " />
     </div>
+    
   </div>
+       <!-- Footer -->
+            <footer class="py-12 bg-[#F8F9FA] border-t border-[#e6e8ec]">
+                <div
+                    class="pr-5.5 md:pr-10 pl-5.5 md:pl-10 w-full max-w-[1296px] mx-auto flex items-center justify-center">
+                    <div class="flex gap-4 w-fit">
+                        <a href="https://vettime.de/datenschutz" target="_blank"
+                            class="text-xs text-[#667093] hover:text-[#151618]">
+                            Datenschutz
+                        </a>
+                        <div class="w-0.25 h-3.5 bg-[#e6e8ec]"></div>
+                        <a href="https://vettime.de/impressum" target="_blank"
+                            class="text-xs text-[#667093] hover:text-[#151618]">
+                            impressum
+                        </a>
+                        <div class="w-0.25 h-3.5 bg-[#e6e8ec]"></div>
+                        <a href="https://vettime.de/agbs" target="_blank"
+                            class="text-xs text-[#667093] hover:text-[#151618]">
+                            AGB
+                        </a>
+                    </div>
+                </div>
+            </footer>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { v4 as uuidv4 } from 'uuid'
+import { setAuth } from "@/stores/auth"
 
 const router = useRouter()
 const username = ref('')
@@ -100,6 +124,12 @@ const password = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
 const error = ref('')
+// validation flags
+const touched = ref({
+  username: false,
+  password: false,
+})
+
 
 // Toggle password visibility
 function togglePassword() {
@@ -127,26 +157,57 @@ async function login() {
 
     if (!res.ok) {
       const errorBody = await res.json().catch(() => ({}))
-      throw new Error(errorBody.message || 'Login failed')
+      const error = new Error(errorBody.message || 'Login failed')
+      error.status = res.status   // 👈 IMPORTANT
+      throw error
     }
 
     const data = await res.json()
 
     // ✅ Save token correctly
     localStorage.setItem('accessToken', data.access_token)
-
+    setAuth(data)
     // Save user info if you want
     localStorage.setItem('user', JSON.stringify(data.user))
 
     router.push('/home')
 
   } catch (err) {
-    console.error(err)
-    error.value = err.message || 'Login fehlgeschlagen'
+    goToErrorPage(err)
+
   } finally {
     loading.value = false
   }
 }
+function goToErrorPage(err) {
+  let friendlyMessage = "An unexpected error occurred."
+  let technicalMessage = ""
+
+  switch (err.status) {
+    case 400:
+      friendlyMessage = "Invalid request."
+      break
+    case 401:
+      friendlyMessage = "Invalid username or password."
+      break
+    case 422:
+      friendlyMessage = "Please check your input."
+      break
+  }
+
+  if (import.meta.env.DEV) {
+    technicalMessage = err.message
+  }
+
+  router.push({
+    path: "/error",
+    query: {
+      message: friendlyMessage,
+      details: technicalMessage,
+    },
+  })
+}
+
 
 
 </script>
