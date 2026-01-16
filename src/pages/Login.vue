@@ -8,7 +8,7 @@
       </a>
 
       <!-- Buttons -->
-      <div class="flex items-center gap-2 border">
+      <div class="flex items-center gap-2 ">
         <router-link to="/login">
           <button
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-[13px] font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 duration-100 border-input hover:text-accent-foreground bg-transparent text-gray-700 border hover:bg-gray-100/50 max-h-8 h-8 px-3.5">
@@ -29,47 +29,57 @@
   <div class=" bg-background flex flex-col lg:flex-row">
     <!-- Left side: Form -->
     <div class="flex flex-1 justify-center items-center p-6">
-      <div class="w-full max-w-md border  text-card-foreground rounded-lg shadow-md p-6">
-        <h2 class="text-3xl font-bold text-center mb-6">demo</h2>
+      <div class="w-full max-w-md border  text-card-foreground rounded-lg  p-6">
+        <h2 class="text-2xl font-bold text-center mb-12">demo</h2>
 
         <form class="space-y-4" @submit.prevent="login">
           <div>
-            <label for="username" class="block text-sm font-medium mb-1">Benutzername</label>
+            <label for="username" class="block text-sm font-normal mb-1">Benutzername</label>
             <input type="text" id="username" v-model="username" placeholder="Ihr Benutzername"
               class="w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
               required />
           </div>
+          <div class="">
+            <label for="password" class="block text-sm font-normal mb-1">
+              Passwort
+            </label>
 
-          <div class="relative">
-            <label for="username" class="block text-sm font-medium mb-1">Passwort</label>
+            <div class="relative group">
+              <input :type="showPassword ? 'text' : 'password'" id="password" autocomplete="current-password"
+                placeholder="Ihr Passwort" class="flex h-10 w-full rounded-md border border-input bg-background
+             px-3 pr-10 text-base
+             placeholder:text-muted-foreground
+             focus-visible:outline-none focus-visible:ring-2
+             focus-visible:ring-ring focus-visible:ring-offset-2" v-model="password" />
 
-            <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password"
-              autocomplete="current-password" placeholder="Ihr Passwort"
-              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 pr-10"
-              required />
+              <button type="button" @click="togglePassword" aria-label="Passwort anzeigen" class="absolute inset-y-0 right-0 w-10
+             flex items-center justify-center
+             text-muted-foreground
+             opacity-50
+             transition-opacity duration-150
+             hover:opacity-100
+             focus-visible:opacity-100
+             focus-visible:outline-none">
+                <!-- eye-off -->
+                <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575" />
+                  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
+                  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151" />
+                  <path d="M2 2l20 20" />
+                </svg>
 
-            <button type="button" @click="togglePassword"
-              class="absolute top-0 right-0 h-full px-3.5 flex items-center justify-center text-muted-foreground hover:text-foreground focus:outline-none">
-              <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="w-4 h-4">
-                <path
-                  d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49">
-                </path>
-                <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path>
-                <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143">
-                </path>
-                <path d="m2 2 20 20"></path>
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                <path
-                  d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
-                </path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
+                <!-- eye -->
+                <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
+            </div>
           </div>
+
+
 
           <div v-if="error" class="text-red-500 text-sm">{{ error }}</div>
 
@@ -87,37 +97,45 @@
       <img src="https://app.vettime.de/images/undraw_real-time-collaboration_bchs.svg" alt="Collaboration illustration"
         class="w-3/4 " />
     </div>
-    
+
   </div>
-       <!-- Footer -->
-            <footer class="py-12 bg-[#F8F9FA] border-t border-[#e6e8ec]">
-                <div
-                    class="pr-5.5 md:pr-10 pl-5.5 md:pl-10 w-full max-w-[1296px] mx-auto flex items-center justify-center">
-                    <div class="flex gap-4 w-fit">
-                        <a href="https://vettime.de/datenschutz" target="_blank"
-                            class="text-xs text-[#667093] hover:text-[#151618]">
-                            Datenschutz
-                        </a>
-                        <div class="w-0.25 h-3.5 bg-[#e6e8ec]"></div>
-                        <a href="https://vettime.de/impressum" target="_blank"
-                            class="text-xs text-[#667093] hover:text-[#151618]">
-                            impressum
-                        </a>
-                        <div class="w-0.25 h-3.5 bg-[#e6e8ec]"></div>
-                        <a href="https://vettime.de/agbs" target="_blank"
-                            class="text-xs text-[#667093] hover:text-[#151618]">
-                            AGB
-                        </a>
-                    </div>
-                </div>
-            </footer>
+  <!-- Footer -->
+  <footer class="py-12 bg-[#F8F9FA] border-t border-[#e6e8ec]">
+    <div class="pr-5.5 md:pr-10 pl-5.5 md:pl-10 w-full max-w-[1296px] mx-auto flex items-center justify-center">
+      <div class="flex gap-4 w-fit">
+        <a href="https://vettime.de/datenschutz" target="_blank" class="text-xs text-[#667093] hover:text-[#151618]">
+          Datenschutz
+        </a>
+        <div class="w-0.25 h-3.5 bg-[#e6e8ec]"></div>
+        <a href="https://vettime.de/impressum" target="_blank" class="text-xs text-[#667093] hover:text-[#151618]">
+          impressum
+        </a>
+        <div class="w-0.25 h-3.5 bg-[#e6e8ec]"></div>
+        <a href="https://vettime.de/agbs" target="_blank" class="text-xs text-[#667093] hover:text-[#151618]">
+          AGB
+        </a>
+      </div>
+    </div>
+  </footer>
+  <ol v-if="showToast"
+    class=" 
+fixed top-0 z-[100] flex w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]">
+    <li role="status"
+      class=" bg-[#ef4444] group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border border-destructive bg-destructive p-6 pr-8 text-destructive-foreground shadow-lg">
+      <div class="text-sm font-semibold text-white">
+        {{ toastMessage }}
+      </div>
+    </li>
+  </ol>
+
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { setAuth } from "@/stores/auth"
-
+const toastMessage = ref("")
+const showToast = ref(false)
 const router = useRouter()
 const username = ref('')
 const password = ref('')
@@ -173,9 +191,30 @@ async function login() {
     router.push('/home')
 
   } catch (err) {
-    goToErrorPage(err)
+    let message = "Ein unerwarteter Fehler ist aufgetreten."
 
-  } finally {
+    switch (err.status) {
+      case 400:
+        message = "Ungültige Anfrage."
+        break
+      case 401:
+        message = "Ungültiger Benutzername oder Passwort."
+        break
+      case 422:
+        message = "Bitte überprüfen Sie Ihre Eingaben."
+        break
+    }
+
+    toastMessage.value = message
+    showToast.value = true
+
+    // auto-hide after 4 seconds
+    setTimeout(() => {
+      showToast.value = false
+    }, 4000)
+  }
+
+  finally {
     loading.value = false
   }
 }
