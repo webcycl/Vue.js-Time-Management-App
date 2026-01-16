@@ -83,9 +83,10 @@
 
           <div v-if="error" class="text-red-500 text-sm">{{ error }}</div>
 
-          <button type="submit"
-            class="w-full py-3 rounded-md bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors"
-            :disabled="loading">
+          <button type="submit" :class="{
+            'w-full py-3 rounded-md bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors': true,
+            'opacity-50 cursor-not-allowed pointer-events-none': loading
+          }" :disabled="loading">
             {{ loading ? 'Anmelden...' : 'Anmelden' }}
           </button>
         </form>
@@ -117,8 +118,7 @@
       </div>
     </div>
   </footer>
-  <ol v-if="showToast"
-    class=" 
+  <ol v-if="showToast" class=" 
 fixed top-0 z-[100] flex w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]">
     <li role="status"
       class=" bg-[#ef4444] group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border border-destructive bg-destructive p-6 pr-8 text-destructive-foreground shadow-lg">

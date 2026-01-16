@@ -6,7 +6,7 @@
     >
       <!-- Logo -->
       <div class="flex items-center justify-center px-8 h-16 border-b gap-3">
-        <span class="text-xs text-[#313230] font-semibold">Unbekannte Praxis</span>
+        <span class="text-xs text-[#313230] font-semibold">demo</span>
         <img
           src="https://app.vettime.de/_next/static/media/logo-wing.1b9ec2fe.svg"
           alt="Logo"
