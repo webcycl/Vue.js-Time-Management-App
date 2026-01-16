@@ -1,37 +1,41 @@
 <template>
   <div class="w-full h-screen">
     <!-- Sidebar -->
-    <aside
-      class="bg-background fixed left-0 top-0 h-screen w-64 border-r hidden lg:flex flex-col z-30"
-    >
+    <aside class="bg-background fixed left-0 top-0 h-screen w-64 border-r hidden lg:flex flex-col z-30">
       <!-- Logo -->
       <div class="flex items-center justify-center px-8 h-16 border-b gap-3">
         <span class="text-xs text-[#313230] font-semibold">demo</span>
-        <img
-          src="https://app.vettime.de/_next/static/media/logo-wing.1b9ec2fe.svg"
-          alt="Logo"
-          class="h-3 w-auto opacity-80"
-        />
+        <img src="https://app.vettime.de/_next/static/media/logo-wing.1b9ec2fe.svg" alt="Logo"
+          class="h-3 w-auto opacity-80" />
       </div>
 
       <nav class="flex-1 overflow-auto px-4 py-5">
-        <SidebarLink icon="house" label="Home" to="/home" />
-        <SidebarLink icon="clock" label="Meine Zeit erfassen" to="/time" />
-        <SidebarLink icon="table" label="Mein Dienstplan" to="/shifts" />
-        <SidebarLink
-          icon="clipboard-list"
-          label="Meine Monatsberichte"
-          to="/monthly-summary"
-        />
-        <SidebarLink icon="square-dashed" label="Meine Abwesenheiten" to="/absences" />
-      </nav>
+        <div class="pb-5">
+          <SidebarLink icon="house" label="Home" to="/home" />
+          <SidebarLink icon="clock" label="Meine Zeit erfassen" to="/time" />
+          <SidebarLink icon="table" label="Mein Dienstplan" to="/shifts" />
+          <SidebarLink icon="clipboard-list" label="Meine Monatsberichte" to="/monthly-summary" />
+          <SidebarLink icon="square-dashed" label="Meine Abwesenheiten" to="/absences" />
+        </div>
 
+        <!-- Manager -->
+        <div class=" pt-5">
+          <SidebarLink icon="clock" label="Arbeitszeitkonten" to="/manager/work-time-accounts" />
+          <SidebarLink icon="table" label="Dienstplanung Team" to="/manager/shifts" />
+          <SidebarLink icon="clipboard-list" label="Monatsberichte Team" to="/manager/dashboard" badge="21" />
+          <SidebarLink icon="square-dashed" label="Abwesenheiten Team" to="/manager/absences" />
+          <SidebarLink icon="users" label="Mein Team" to="/manager/employees" />
+          <SidebarLink icon="settings" label="Praxiseinstellungen" to="/manager/settings" />
+        </div>
+        
       <!-- Bottom Buttons -->
-      <div class="flex flex-col px-4 pb-4">
+      <div class="flex flex-col  py-4">
         <SidebarAction icon="feedback" label="Feedback geben" @click="openFeedback" />
 
         <SidebarAction icon="help" label="Hilfe" @click="openHelp" />
       </div>
+      </nav>
+
     </aside>
 
     <!-- Main Content -->
@@ -40,18 +44,12 @@
       <header class="flex items-center justify-between h-12 border-b lg:hidden px-4">
         <button @click="sidebarOpen = !sidebarOpen">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
         <span
-          class="text-base truncate font-semibold text-gray-600 overflow-hidden text-ellipsis mr-auto select-none"
-          >Unbekannte Praxis</span
-        >
+          class="text-base truncate font-semibold text-gray-600 overflow-hidden text-ellipsis mr-auto select-none">Unbekannte
+          Praxis</span>
       </header>
 
       <!-- Content -->
@@ -68,8 +66,7 @@
           <div class="p-6 bg-white border rounded-lg shadow">
             <h3 class="font-bold text-gray-700 mb-2">Nicht eingestempelt</h3>
             <button
-              class="inline-flex items-center justify-center gap-2 whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 duration-100 bg-primary text-primary-foreground hover:bg-primary/90 h-12 rounded-md px-8 text-[14px] font-bold w-full focus-visible:ring-transparent"
-            >
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 duration-100 bg-primary text-primary-foreground hover:bg-primary/90 h-12 rounded-md px-8 text-[14px] font-bold w-full focus-visible:ring-transparent">
               Einstempeln
             </button>
           </div>
@@ -83,9 +80,7 @@
             </div>
           </div>
 
-          <div
-            class="p-6 pb-0 bg-white border rounded-lg shadow flex items-center justify-center pt-64"
-          >
+          <div class="p-6 pb-0 bg-white border rounded-lg shadow flex items-center justify-center pt-64">
             <span class="text-gray-400 text-center">
               Klicken Sie auf einen Mitarbeiter, um den Konto-Verlauf einzusehen
             </span>

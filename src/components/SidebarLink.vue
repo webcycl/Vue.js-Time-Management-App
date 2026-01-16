@@ -40,6 +40,7 @@ import {
   ClipboardList,
   SquareDashed
 } from 'lucide-vue-next'
+import { Users, Settings } from 'lucide-vue-next'
 
 const props = defineProps({
   to: { type: String, required: true },
@@ -57,6 +58,8 @@ const icons = {
   table: Table2,
   'clipboard-list': ClipboardList,
   'square-dashed': SquareDashed,
+   users: Users,        // ← add this
+  settings: Settings,
 }
 
 const iconComponent = computed(() => icons[props.icon])
